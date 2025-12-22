@@ -37,8 +37,8 @@ def gp(args, graph):
                 ff.write("numpy.inf, ")
         return np.inf
 
-    mod3_inter_Exp = np.trace(X_final @ W @ X_final.T)
-    logging.info("Expectation = " + str(mod3_inter_Exp))
+    # mod3_inter_Exp = np.trace(X_final @ W @ X_final.T)
+    # logging.info("Expectation = " + str(mod3_inter_Exp))
 
     max_iter = args.max_iter
     best_inter = np.inf

@@ -34,8 +34,8 @@ def md(args, graph):
     X_final = mirror_gd(args, obj, f_and_grad, X0, W, L0)
 
 
-    mod3_inter_Exp = np.trace(X_final @ W @ X_final.T)
-    logging.info("Expectation = " + str(mod3_inter_Exp))
+    # mod3_inter_Exp = np.trace(X_final @ W @ X_final.T)
+    # logging.info("Expectation = " + str(mod3_inter_Exp))
 
     max_iter = args.max_iter
     best_inter = np.inf

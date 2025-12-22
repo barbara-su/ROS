@@ -3,6 +3,7 @@ import random
 import numpy as np
 import torch
 import copy
+import os
 
 
 def relabel_nodes_sorted_ordered(G):
@@ -31,6 +32,9 @@ def generate_graph(args):
     elif args.graph_type == "bitcoin":
         # nx_graph = read_bitcoin(args)
         return read_bitcoin(args)
+    # read the pre-loaded graph
+    elif args.graph_type == "load":
+        return load_graph(args)
     else:
         raise NotImplementedError(f'Graph type {args.graph_type} not handled')
     
@@ -118,6 +122,31 @@ def read_gset(args):
                 raise "Mode 0 can not be used in GSET as the sign is given by the Gset it self."
     return nx_graph
 
+def load_graph(args):
+    """Constructs a graph from a Laplacian/adjacency matrix stored in a .npy file."""
+    if args.graph_path is None:
+        raise ValueError("graph_path must be provided for graph_type=load")
+    graph_file = os.path.expanduser(args.graph_path)
+    if not os.path.isfile(graph_file):
+        raise FileNotFoundError(f"Graph file {graph_file} not found")
+    matrix = np.load(graph_file)
+    if matrix.ndim != 2 or matrix.shape[0] != matrix.shape[1]:
+        raise ValueError("The provided matrix must be square")
+    if not np.allclose(matrix, matrix.T):
+        raise ValueError("The provided matrix must be symmetric")
+    args.n = matrix.shape[0]
+    adjacency = np.where(matrix < 0, -matrix, matrix).astype(float)
+    np.fill_diagonal(adjacency, 0.0)
+    nx_graph = nx.Graph()
+    nx_graph.add_nodes_from(range(args.n))
+    for i in range(args.n):
+        for j in range(i + 1, args.n):
+            weight = adjacency[i, j]
+            if weight == 0:
+                continue
+            nx_graph.add_edge(i, j, weight=float(weight))
+    return nx_graph
+
 
 def postprocess(result, graph):
     """
@@ -130,12 +159,37 @@ def postprocess(result, graph):
         ind_set: MIS (list of integers)
         number_violations: number of violations of ind.set condition
     """
-    maxcut = 0
+    # maxcut = 0
+    # for (u, v, val) in graph.edges(data=True):
+    #     wt = val['weight']
+    #     if result[u] != result[v]:
+    #         maxcut = maxcut + wt
+    # return maxcut
+
+    # Match the Laplacian-based scoring used in max-k-cut-parallel
+    k = 3
+    if torch.is_tensor(result):
+        assignments = result.detach().cpu().numpy()
+    else:
+        assignments = np.asarray(result)
+    assignments = assignments.astype(int).flatten()
+
+    n = graph.number_of_nodes()
+    if assignments.shape[0] < n:
+        raise ValueError("Insufficient assignments provided to score max-3-cut result")
+
+    laplacian = np.zeros((n, n), dtype=np.float64)
     for (u, v, val) in graph.edges(data=True):
-        wt = val['weight']
-        if result[u] != result[v]:
-            maxcut = maxcut + wt    
-    return maxcut
+        wt = float(val.get('weight', 1.0))
+        laplacian[u, u] += wt
+        laplacian[v, v] += wt
+        laplacian[u, v] -= wt
+        laplacian[v, u] -= wt
+
+    roots = np.exp(2 * np.pi * 1j * np.arange(k) / k)
+    z = roots[np.mod(assignments[:n], k)]
+    score = np.einsum('i,ij,j->', np.conjugate(z), laplacian, z).real
+    return score
 
 
 def set_random_seed(seed):
@@ -154,5 +208,3 @@ def get_matrix(args, nx_G):
         W_mat[u][v] = val['weight'] / 2
         W_mat[v][u] = val['weight'] / 2
     return W_mat
-
-

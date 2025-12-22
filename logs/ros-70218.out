@@ -1,0 +1,12 @@
+Job started on bg4u7g1
+SLURM_CPUS_PER_TASK: 100
+Graph path: graphs/graphs_rank_1/Q_100.npy
+k: 3 | seed: 42
+lr: 1e-2 | weight decay: 1e-4
+Load gcn_model_ood_k3.pth
+Epoch 0: 1702.6343383789062 0
+stopping early on epoch 262 (patience: 100)
+GNN training (Epoch=262) took 0.988
+Expectation = 1849.5394287109375
+FINAL RESULT: 1850.0
+Job complete.

@@ -13,7 +13,6 @@ from goemans_williamson.gw import gw
 from ros.ros import ros
 from genetic.genetic import genetic
 from bqp.bqp import bqp
-from anycsp.anycsp import ac
 
 
 if __name__ == "__main__":
@@ -44,6 +43,7 @@ if __name__ == "__main__":
     elif args.alg == "bqp":
         result = bqp(args, graph)
     elif args.alg == "ANYCSP":
+        from anycsp.anycsp import ac
         result = ac(args, graph)
     else:
         print(args.alg)

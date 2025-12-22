@@ -1,0 +1,5 @@
+Job started on bg4u7g1
+SLURM_CPUS_PER_TASK: 100
+Graph path: graphs/graphs_rank_1/Q_100.npy
+k: 3 | seed: 0
+lr: 1e-2 | weight decay: 1e-4

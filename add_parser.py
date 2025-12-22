@@ -22,6 +22,7 @@ def add_parse():
     parser.add_argument("--epsilon_PMD", type=float, default=1e-8)
     parser.add_argument("--max_iter", type=int, default=100)
     parser.add_argument("--gset", type=str, default="1")
+    parser.add_argument("--graph_path", type=str, default=None, help="Path to a serialized graph input (e.g., .npy matrix)")
 
     parser.add_argument("--pretraining_graphnum", type=int, default=500)
     parser.add_argument("--pretraining_epochs", type=int, default=1)

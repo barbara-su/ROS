@@ -8,8 +8,8 @@ def ros_vanilla(args, graph):
     gnn_start = time.time()
     net, optimizer, edges, edges_weight, inputs = get_gnn(args, graph)
     best_solution_relaxed = run_gnn_training(args, W, graph, edges, edges_weight, net, optimizer, inputs)
-    Expectation = torch.trace(best_solution_relaxed @ W @ best_solution_relaxed.T)
-    print("Expectation = " + str((W.sum() - Expectation).item()))
+    # Expectation = torch.trace(best_solution_relaxed @ W @ best_solution_relaxed.T)
+    # print("Expectation = " + str((W.sum() - Expectation).item()))
     best_val = torch.inf
     for _ in range(args.max_iter):
         Xt = sample_one_hot(best_solution_relaxed)
