@@ -31,7 +31,6 @@ def pignn(args, graph):
 
 
     gnn_time = time.time() - gnn_start
-    if args.save:
-        with open("./res/pignn_time.txt", "a") as ff:
-            ff.write(str(round(gnn_time, 3)) + ", ")
-    return best_bitstring
+
+    # Return (solution, time_seconds) instead of writing anything
+    return best_bitstring, float(gnn_time)

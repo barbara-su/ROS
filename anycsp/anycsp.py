@@ -56,8 +56,12 @@ def ac(args, graph):
         num_solved += int(solved)
         best_cut_val = max_val - best
     print(f'Solved {100 * num_solved / num_total:.2f}%')
-    print(time.time() - t0)
-    if args.save:
-        with open("./res/" + args.alg + "_time.txt", "a") as f:
-            f.write(str(round(time.time()-t0, 3)) + ", ")
-    return data.best_assignment.cpu().numpy()
+    elapsed = time.time() - t0
+    A = data.best_assignment if hasattr(data, "best_assignment") else data.all_assignments[:, [0]]
+    if A.ndim == 2: A = A[:, 0]  # handle [num_var, T] case
+    b = int(torch.argmin(data.best_num_unsat).item()) if args.num_boost > 1 else 0
+    if A.numel() == data.num_val: A = data.hard_assign_max(A.float()).view(-1)  # only if value-level
+    sol = A.view(-1)[data.batch == b].detach().cpu().numpy()  # keep best boosted instance only
+    
+    # if args.save: open("./res/" + args.alg + "_time.txt", "a").write(f"{elapsed:.3f}, ")
+    return sol, float(elapsed)

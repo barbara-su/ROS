@@ -25,7 +25,5 @@ def gw(args, graph):
     cut = cut.real
     cut = cut * 0.5 + 0.5
     runtime = time.time() - t0
-    if args.save:
-        with open("./res/gw_time.txt", "a") as ff:
-            ff.write(str(runtime) + ", ")
-    return cut
+    # Return (solution, time_seconds) instead of writing a file (match ros)
+    return cut, float(runtime)

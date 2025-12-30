@@ -1,0 +1,9 @@
+{
+  "timestamp": "20251227_025720",
+  "alg": "ANYCSP",
+  "seed": 42,
+  "q_file": "/home/bs82/max-k-cut-parallel/graphs/erdos_renyi/rank_1/p05/n100/Q_100_seed_8.npy",
+  "n": 100,
+  "maxcut": 4956.0,
+  "alg_time_seconds": 33.75623822212219
+}

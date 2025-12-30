@@ -50,8 +50,7 @@ def md(args, graph):
             best_X = Xt
     runtime = time.time() - t0
     logging.info("Time: {}".format(runtime))
-    if args.save:
-        with open("./res/md_time.txt", "a") as ff:
-            ff.write(str(runtime) + ", ")
     best_x = best_X.argmax(axis=0)
-    return best_x
+
+    # Return (solution, time_seconds) instead of writing anything
+    return best_x, float(runtime)

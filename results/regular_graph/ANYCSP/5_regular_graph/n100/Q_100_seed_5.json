@@ -1,0 +1,9 @@
+{
+  "timestamp": "20251227_030822",
+  "alg": "ANYCSP",
+  "seed": 42,
+  "q_file": "/home/bs82/max-k-cut-parallel/graphs/regular_graph/5_regular_graph_rank_1/n100/Q_100_seed_5.npy",
+  "n": 100,
+  "maxcut": 504.0,
+  "alg_time_seconds": 11.61911916732788
+}
