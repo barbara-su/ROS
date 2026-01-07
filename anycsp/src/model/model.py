@@ -46,15 +46,41 @@ class ANYCSP(Module):
         state_dict['global_step'] = self.global_step
         torch.save(state_dict, os.path.join(model_dir, f'{name}.pkl'))
 
-    @staticmethod
-    def load_model(args, model_dir, name='model'):
-        config = read_config(os.path.join(model_dir, 'config.json'))
-        model = ANYCSP(args, model_dir, config)
-        state_dict = torch.load(os.path.join(model_dir, 'opt_state_dict.pt'), map_location='cpu')
-        model.load_state_dict(state_dict, strict=False)
+    # @staticmethod
+    # def load_model(args, model_dir, name='model'):
+    #     config = read_config(os.path.join(model_dir, 'config.json'))
+    #     model = ANYCSP(args, model_dir, config)
+    #     state_dict = torch.load(os.path.join(model_dir, 'training_state.pt'), map_location='cpu')
+    #     model.load_state_dict(state_dict, strict=False)
         
-        if 'global_step' in state_dict:
-            model.global_step = state_dict['global_step']
+    #     if 'global_step' in state_dict:
+    #         model.global_step = state_dict['global_step']
+    #     return model
+    
+    @staticmethod
+    def load_model(args, model_dir, name: str = "best"):
+        """
+        Loads weights from `<model_dir>/<name>.pkl` (default: best.pkl).
+        Falls back to `model.pkl` if the requested file does not exist.
+        """
+        config = read_config(os.path.join(model_dir, "config.json"))
+        model = ANYCSP(args, model_dir, config)
+
+        ckpt_path = os.path.join(model_dir, f"{name}.pkl")
+        if not os.path.exists(ckpt_path):
+            ckpt_path = os.path.join(model_dir, "best.pkl") if os.path.exists(os.path.join(model_dir, "best.pkl")) \
+                else os.path.join(model_dir, "model.pkl")
+
+        state_dict = torch.load(ckpt_path, map_location="cpu")
+
+        # Your save_model() stores global_step inside the same dict.
+        global_step = state_dict.pop("global_step", None)
+
+        model.load_state_dict(state_dict, strict=False)
+
+        if global_step is not None:
+            model.global_step = int(global_step)
+
         return model
 
     def init_assignment(self, data):
