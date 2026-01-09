@@ -33,8 +33,25 @@ sbatch experiments/single_node_gen_graph.sh 500 2
 https://stackoverflow.com/questions/11443302/compiling-numpy-with-openblas-integration/14391693?noredirect=1#comment32392960_14391693
 
 
-# get codex to work
+### get codex to work
 conda install -c conda-forge nodejs=20 -y
 npm install -g @openai/codex
 
 zip -r rank_1_results.zip results
+
+### gpu stuffs 
+1. Check allocation status: 
+sinfo -N -O "NodeList,CPUsState,Memory,FreeMem,Gres,GresUsed"   | awk 'NR==1{print; next} {print $1, $2, $3/1024, $4/1024, $5, $6}'
+2. Test on gpu: 
+srun --pty --time=23:00:00 --gres=gpu:h200:1 --mem=20G $SHELL
+
+### gpu preparation
+module purge || true
+unset LD_PRELOAD || true
+export XALT_EXECUTABLE_TRACKING=0
+export XALT_RUNNABLE=0
+unset LD_LIBRARY_PATH
+source ~/miniforge3/etc/profile.d/conda.sh
+module load CUDA/12.9.1
+export CONDA_NO_PLUGINS=1
+conda activate ./anycsp_gpu

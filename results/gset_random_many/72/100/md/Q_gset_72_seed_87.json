@@ -1,0 +1,9 @@
+{
+  "timestamp": "20260107_231409",
+  "alg": "md",
+  "seed": 42,
+  "q_file": "/scratch/bs82/graphs/gset_random_many/72/100/Q_gset_72_seed_87.npy",
+  "n": 10000,
+  "maxcut": 1178066.6780054646,
+  "alg_time_seconds": 644.2449033260345
+}

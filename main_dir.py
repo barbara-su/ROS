@@ -152,7 +152,15 @@ def main() -> None:
             if isinstance(result, tuple) and len(result) == 2:
                 result, alg_time_seconds = result
 
-            if isinstance(result, float):
+            best_k = None
+
+            if isinstance(result, dict):
+                if "best_k" in result:
+                    best_k = result["best_k"]
+                    maxcut = float(postprocess(best_k, graph))
+                else:
+                    raise ValueError("Unknown dict result format")
+            elif isinstance(result, float):
                 maxcut = float(np.inf)
             else:
                 maxcut = float(postprocess(result, graph))
@@ -165,6 +173,9 @@ def main() -> None:
                 "n": int(Q.shape[0]),
                 "maxcut": maxcut,
             }
+            if best_k is not None:
+                payload["best_k"] = best_k
+                
             if alg_time_seconds is not None:
                 payload["alg_time_seconds"] = float(alg_time_seconds)
 

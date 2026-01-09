@@ -28,8 +28,10 @@ def ros(args, graph):
             best_val = val
             best_solution = Xt
 
-    best_solution = best_solution.argmax(axis=0)
+    best_k = best_solution.argmax(dim=0).cpu().tolist()
     gnn_time = time.time() - gnn_start
 
-    # Return (solution, time_seconds) instead of writing a file
-    return best_solution, float(gnn_time)
+    return {
+        "best_k": best_k,
+        "objective": float(best_val.item()),
+    }, float(gnn_time)
