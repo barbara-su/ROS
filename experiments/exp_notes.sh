@@ -248,3 +248,6 @@ sbatch experiments/alg_dir_gpu.sh /scratch/bs82/graphs/gset_random_many/49/100 r
 sbatch experiments/alg_dir_gpu.sh /scratch/bs82/graphs/gset_random_many/50/1_1 results/gset_random_many/50/1_1/md md
 sbatch experiments/alg_dir_gpu.sh /scratch/bs82/graphs/gset_random_many/50/10 results/gset_random_many/50/10/md md
 sbatch experiments/alg_dir_gpu.sh /scratch/bs82/graphs/gset_random_many/50/100 results/gset_random_many/50/100/md md
+
+# sbm
+sbatch experiments/alg_dir_gpu.sh /scratch/bs82/graphs/graphs_sbm/example results/graphs_sbm/example/ros ros
