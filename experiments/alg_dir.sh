@@ -5,8 +5,8 @@
 
 #SBATCH --partition=commons
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=64
-#SBATCH --mem=200G
+#SBATCH --cpus-per-task=32
+#SBATCH --mem=20G
 #SBATCH --time=23:00:00
 
 set -euo pipefail

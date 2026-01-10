@@ -251,3 +251,10 @@ sbatch experiments/alg_dir_gpu.sh /scratch/bs82/graphs/gset_random_many/50/100 r
 
 # sbm
 sbatch experiments/alg_dir_gpu.sh /scratch/bs82/graphs/graphs_sbm/example results/graphs_sbm/example/ros ros
+
+sbatch experiments/alg_dir.sh /scratch/bs82/graphs/graphs_sbm/pout_0.1_pin_0.01 results/graphs_sbm/pout_0.1_pin_0.01/ros ros
+sbatch experiments/alg_dir.sh /scratch/bs82/graphs/graphs_sbm/pout_0.05_pin_0.05 results/graphs_sbm/pout_0.05_pin_0.05/ros ros
+sbatch experiments/alg_dir.sh /scratch/bs82/graphs/graphs_sbm/n1000_b10 results/graphs_sbm/n1000_b10/ros ros
+sbatch experiments/alg_dir.sh /scratch/bs82/graphs/graphs_sbm/n1000_b100 results/graphs_sbm/n1000_b100/ros ros
+sbatch experiments/alg_dir_gpu.sh /scratch/bs82/graphs/graphs_sbm/n10000_b100 results/graphs_sbm/n10000_b100/ros ros
+sbatch experiments/alg_dir.sh /scratch/bs82/graphs/graphs_sbm/n999_b3 results/graphs_sbm/n999_b3/ros ros
